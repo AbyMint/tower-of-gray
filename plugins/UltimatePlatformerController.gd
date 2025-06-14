@@ -246,8 +246,65 @@ func _updateData():
 		twoWayDashVertical = true
 	elif dashType == 4:
 		eightWayDash = true
+
 	
-	
+enum AnimationState {
+	IDLE,
+	RUN,
+	WALK,
+	JUMP,
+	FALLING,
+	SLIDE,
+	LATCH,
+	CROUCH_IDLE,
+	CROUCH_WALK,
+	ROLL,
+	DASH
+}
+
+var current_state: AnimationState = AnimationState.IDLE
+var previous_state: AnimationState = AnimationState.IDLE
+
+func _set_state(new_state: AnimationState):
+	if current_state == new_state:
+		return
+	previous_state = current_state
+	current_state = new_state
+	match current_state:
+		AnimationState.IDLE:
+			anim.speed_scale = 1
+			anim.play("idle")
+		AnimationState.RUN:
+			anim.speed_scale = abs(velocity.x / 150)
+			anim.play("run")
+		AnimationState.WALK:
+			anim.speed_scale = abs(velocity.x / 150)
+			anim.play("walk")
+		AnimationState.JUMP:
+			anim.speed_scale = 1
+			anim.play("jump")
+		AnimationState.FALLING:
+			anim.speed_scale = 1
+			anim.play("falling")
+		AnimationState.SLIDE:
+			anim.speed_scale = 1
+			anim.play("slide")
+		AnimationState.LATCH:
+			anim.speed_scale = 1
+			anim.play("latch")
+		AnimationState.CROUCH_IDLE:
+			anim.speed_scale = 1
+			anim.play("crouch_idle")
+		AnimationState.CROUCH_WALK:
+			anim.speed_scale = 1
+			anim.play("crouch_walk")
+		AnimationState.ROLL:
+			anim.speed_scale = 1
+			anim.play("roll")
+		AnimationState.DASH:
+			anim.speed_scale = 1
+			anim.play("dash")
+
 
 func _process(_delta):
 	#INFO animations
@@ -263,79 +320,39 @@ func _process(_delta):
 		anim.scale.x = animScaleLock.x
 	if leftHold and !latched:
 		anim.scale.x = animScaleLock.x * -1
-	
-	#run
-	if run and idle and !dashing and !crouching:
-		if abs(velocity.x) > 0.1 and is_on_floor() and !is_on_wall():
-			anim.speed_scale = abs(velocity.x / 150)
-			anim.play("run")
-		elif abs(velocity.x) < 0.1 and is_on_floor():
-			anim.speed_scale = 1
-			anim.play("idle")
-	elif run and idle and walk and !dashing and !crouching:
-		if abs(velocity.x) > 0.1 and is_on_floor() and !is_on_wall():
-			anim.speed_scale = abs(velocity.x / 150)
-			if abs(velocity.x) < (maxSpeedLock):
-				anim.play("walk")
-			else:
-				anim.play("run")
-		elif abs(velocity.x) < 0.1 and is_on_floor():
-			anim.speed_scale = 1
-			anim.play("idle")
-		
-	#jump
-	if velocity.y < 0 and jump and !dashing:
-		# Solo cambiamos a la animación de salto si no estamos ya en ella
-		if anim.animation != "jump":
-			anim.speed_scale = 1
-			anim.play("jump")
+
+	# Animation State Machine Logic
+	if dashing:
+		_set_state(AnimationState.DASH)
+	elif rolling:
+		_set_state(AnimationState.ROLL)
+	elif crouching and !rolling:
+		if abs(velocity.x) > 10:
+			_set_state(AnimationState.CROUCH_WALK)
+		else:
+			_set_state(AnimationState.CROUCH_IDLE)
+	elif latched and latch:
+		_set_state(AnimationState.LATCH)
+	elif is_on_wall() and velocity.y > 0 and slide and wallSliding != 1:
+		_set_state(AnimationState.SLIDE)
+	elif velocity.y < 0 and jump and !dashing:
+		_set_state(AnimationState.JUMP)
 	elif velocity.y > 20 and falling and !is_on_floor() and !dashing and !crouching:
-		# Reproducimos la animación de caída SOLO cuando el personaje está cayendo Y no está en el suelo
-		if anim.animation != "falling":
-			anim.speed_scale = 1
-			anim.play("falling")
+		_set_state(AnimationState.FALLING)
 	elif is_on_floor() and !dashing and !crouching:
-		# Cuando estamos en el suelo, reproducimos la animación correspondiente según la velocidad
 		if abs(velocity.x) > 0.1:
 			if run and walk and abs(velocity.x) < (maxSpeedLock):
-				anim.speed_scale = abs(velocity.x / 150)
-				anim.play("walk")
+				_set_state(AnimationState.WALK)
 			elif run:
-				anim.speed_scale = abs(velocity.x / 150)
-				anim.play("run")
-		else:
-			# Aseguramos que volvemos a idle cuando tocamos el suelo y no nos movemos
-			anim.speed_scale = 1
-			anim.play("idle")
-
-
-		
-	if latch and slide:
-		#wall slide and latch
-		if latched and !wasLatched:
-			anim.speed_scale = 1
-			anim.play("latch")
-		if is_on_wall() and velocity.y > 0 and slide and anim.animation != "slide" and wallSliding != 1:
-			anim.speed_scale = 1
-			anim.play("slide")
-			
-		#dash
-		if dashing:
-			anim.speed_scale = 1
-			anim.play("dash")
-			
-		#crouch
-		if crouching and !rolling:
-			if abs(velocity.x) > 10:
-				anim.speed_scale = 1
-				anim.play("crouch_walk")
+				_set_state(AnimationState.RUN)
 			else:
-				anim.speed_scale = 1
-				anim.play("crouch_idle")
-		
-		if rollTap and canRoll and roll:
-			anim.speed_scale = 1
-			anim.play("roll")
+				_set_state(AnimationState.IDLE)
+		else:
+			_set_state(AnimationState.IDLE)
+	else:
+		# Default fallback
+		_set_state(AnimationState.IDLE)
+
 		
 		
 		

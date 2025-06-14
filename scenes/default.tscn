@@ -1,7 +1,6 @@
-[gd_scene load_steps=15 format=4 uid="uid://blcaeu1umjj11"]
+[gd_scene load_steps=14 format=4 uid="uid://blcaeu1umjj11"]
 
 [ext_resource type="Script" uid="uid://rtb60f7uiur0" path="res://plugins/UltimatePlatformerController.gd" id="1_e232d"]
-[ext_resource type="Texture2D" uid="uid://kaipbr70vl7w" path="res://sprites/ardillaPixel.png" id="2_nvwnn"]
 [ext_resource type="Texture2D" uid="uid://dyqi8xvlq340h" path="res://sprites/ardillaSaltando.png" id="2_ya6ni"]
 [ext_resource type="Texture2D" uid="uid://btcemel1krgmf" path="res://sprites/ardillaAterriza.png" id="3_5vjm7"]
 [ext_resource type="Texture2D" uid="uid://bapoghkrxst3f" path="res://sprites/ladrillosTiles.png" id="3_ya6ni"]
@@ -374,7 +373,7 @@ navigation_layer_0/layers = 1
 sources/1 = SubResource("TileSetAtlasSource_nvwnn")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u4rra"]
-size = Vector2(20, 36)
+size = Vector2(20, 35)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7vjpr"]
 animations = [{
@@ -387,9 +386,6 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_nvwnn")
-}, {
 "duration": 1.0,
 "texture": ExtResource("5_u4rra")
 }],
@@ -415,6 +411,17 @@ animations = [{
 "loop": true,
 "name": &"walk",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_wdrtm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_u4rra")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 5.0
 }]
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_5vjm7"]
@@ -431,7 +438,7 @@ tile_set = SubResource("TileSet_5vjm7")
 position = Vector2(50, 49)
 script = ExtResource("1_e232d")
 PlayerSprite = NodePath("AnimatedSprite2D")
-PlayerCollider = NodePath("CollisionShape2D")
+PlayerCollider = NodePath("Hitbox")
 maxSpeed = 150.0
 timeToReachMaxSpeed = 0.5
 jumps = 2
@@ -445,12 +452,13 @@ idle = true
 walk = true
 falling = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ardilla"]
+[node name="Hitbox" type="CollisionShape2D" parent="Ardilla"]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_u4rra")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Ardilla"]
 sprite_frames = SubResource("SpriteFrames_7vjpr")
-animation = &"idle"
+animation = &"walk"
 autoplay = "idle"
 
 [node name="Camera2D" type="Camera2D" parent="Ardilla"]
