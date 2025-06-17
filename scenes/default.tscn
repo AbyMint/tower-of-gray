@@ -430,6 +430,17 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("7_u4rra")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_wdrtm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_u4rra")
 }, {
 "duration": 1.0,
 "texture": ExtResource("6_wdrtm")
@@ -439,18 +450,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_wdrtm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_u4rra")
-}],
-"loop": true,
-"name": &"walking",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [node name="Node2D" type="Node2D"]
@@ -478,6 +478,7 @@ inputPauseAfterWallJump = 0.0
 wallKickAngle = 80.0
 wallSliding = 8.0
 dashType = 4
+run = true
 jump = true
 idle = true
 walk = true
@@ -490,8 +491,9 @@ script = ExtResource("5_jy3qc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Ardilla"]
 sprite_frames = SubResource("SpriteFrames_7vjpr")
-animation = &"walk"
+animation = &"run"
 autoplay = "idle"
+frame_progress = 0.202069
 
 [node name="Camera2D" type="Camera2D" parent="Ardilla"]
 scale = Vector2(-1054.79, -14.7314)
