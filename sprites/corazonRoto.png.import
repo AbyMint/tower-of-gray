@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bi00sxamtbt0l"
-path="res://.godot/imported/corazón.png-907bc6b709cb7c3a8c4670b167f7ebbe.ctex"
+uid="uid://d2tjdl7obxj6v"
+path="res://.godot/imported/corazonRoto.png-9df4f1aaea0846c129af995ed2401cb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/corazón.png"
-dest_files=["res://.godot/imported/corazón.png-907bc6b709cb7c3a8c4670b167f7ebbe.ctex"]
+source_file="res://sprites/corazonRoto.png"
+dest_files=["res://.godot/imported/corazonRoto.png-9df4f1aaea0846c129af995ed2401cb3.ctex"]
 
 [params]
 

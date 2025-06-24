@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://blcaeu1umjj11"]
+[gd_scene load_steps=22 format=4 uid="uid://blcaeu1umjj11"]
 
 [ext_resource type="Script" uid="uid://rtb60f7uiur0" path="res://plugins/UltimatePlatformerController.gd" id="1_e232d"]
 [ext_resource type="Texture2D" uid="uid://dyt0wphi1gtur" path="res://sprites/picos.png" id="2_hvtui"]
@@ -8,11 +8,12 @@
 [ext_resource type="Script" uid="uid://ce6257k3u2dum" path="res://scenes/props.gd" id="3_qh87u"]
 [ext_resource type="Texture2D" uid="uid://cy0syyys03n3x" path="res://sprites/ardillaDash.png" id="3_u4rra"]
 [ext_resource type="Texture2D" uid="uid://bapoghkrxst3f" path="res://sprites/ladrillosTiles.png" id="3_ya6ni"]
-[ext_resource type="Texture2D" uid="uid://bi00sxamtbt0l" path="res://sprites/corazón.png" id="5_6y2o2"]
+[ext_resource type="Texture2D" uid="uid://bi00sxamtbt0l" path="res://sprites/corazonLleno.png" id="5_6y2o2"]
 [ext_resource type="Script" uid="uid://bvhxv4qiiumg7" path="res://scenes/hitboxArdilla.gd" id="5_jy3qc"]
 [ext_resource type="Texture2D" uid="uid://dp6k7p763743y" path="res://sprites/ardillaIdle2.png" id="5_u4rra"]
 [ext_resource type="Texture2D" uid="uid://cm61wa1327qbn" path="res://sprites/ardillaWalk1.png" id="6_wdrtm"]
 [ext_resource type="Texture2D" uid="uid://gspuj5fpi4jf" path="res://sprites/ardillaWalk2.png" id="7_u4rra"]
+[ext_resource type="Script" uid="uid://bs8v27me77a30" path="res://scenes/controlador_vida.gd" id="14_51dr8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nvwnn"]
 texture = ExtResource("3_ya6ni")
@@ -381,8 +382,13 @@ sources/1 = SubResource("TileSetAtlasSource_nvwnn")
 texture = ExtResource("2_hvtui")
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jy3qc"]
+texture = ExtResource("5_6y2o2")
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_jy3qc"]
 sources/0 = SubResource("TileSetAtlasSource_qh87u")
+sources/1 = SubResource("TileSetAtlasSource_jy3qc")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u4rra"]
 size = Vector2(20, 37)
@@ -501,11 +507,13 @@ zoom = Vector2(0.8, 0.8)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Ardilla"]
 
-[node name="Vida" type="Node2D" parent="Ardilla"]
+[node name="ControladorVida" type="Node2D" parent="Ardilla" groups=["controlador_vida"]]
 position = Vector2(-114, -122)
+script = ExtResource("14_51dr8")
 
-[node name="Sprite2D" type="Sprite2D" parent="Ardilla/Vida"]
-scale = Vector2(2, 2)
-texture = ExtResource("5_6y2o2")
+[node name="CanvasLayer" type="CanvasLayer" parent="Ardilla/ControladorVida"]
+
+[node name="ContenedorCorazones" type="HBoxContainer" parent="Ardilla/ControladorVida/CanvasLayer" groups=["controlador_vida"]]
+size_flags_horizontal = 3
 
 [connection signal="ready" from="Props" to="Props" method="_on_ready"]

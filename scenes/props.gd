@@ -18,7 +18,7 @@ func _on_ready() -> void:
 			# Configuramos para detectar todo tipo de interacciones
 			area.collision_layer = 0xFFFFFFFF  # Todas las capas
 			area.collision_mask = 0xFFFFFFFF   # Todas las máscaras
-			
+			# division de enteros, decimal irrelevante de momento
 			shape.extents = Vector2(tile_set.tile_size.x / 2, tile_set.tile_size.y / 2)
 			collision.shape = shape
 			collision.position = Vector2(tile_set.tile_size.x / 2, tile_set.tile_size.y / 2)
