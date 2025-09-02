@@ -113,8 +113,3 @@ func _actualizar_corazones_ui():
 # Termina el período de invulnerabilidad
 func _terminar_invulnerabilidad():
 	puede_recibir_danio = true
-
-# Esta función será llamada desde hitboxArdilla cuando interactúe con un prop
-func on_prop_interaction(tile_pos: Vector2i) -> void:
-	# Aplicar daño cuando la ardilla toca un prop
-	recibir_danio(1)
