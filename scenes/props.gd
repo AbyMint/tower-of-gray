@@ -30,30 +30,13 @@ func _on_ready() -> void:
 			
 			area.add_child(collision)
 			
-			# Conectamos múltiples señales para asegurar la detección
-			area.area_entered.connect(_on_area_area_entered.bind(tile_pos))
+			# Conectamos la señal de detección de cuerpos
 			area.body_entered.connect(_on_area_body_entered.bind(tile_pos))
 			
 			add_child(area)
 			count += 1
 	
 	print("Se crearon " + str(count) + " áreas para props.")
-
-
-# Esta función se llama cuando otra área entra en contacto
-func _on_area_area_entered(other_area, tile_pos: Vector2i) -> void:
-	print("Área detectada: ", other_area.name, " en posición: ", tile_pos)
-	
-	# Verificamos si el área pertenece a la ardilla de varias maneras posibles
-	var parent = other_area.get_parent()
-	if parent and "Ardilla" in parent.name or "Player" in parent.name or parent is PlatformerController2D:
-		print("¡Hitbox de la ardilla activó un área en la posición: ", tile_pos, "!")
-		
-		# Intentamos llamar a la función en hitboxArdilla.gd
-		if other_area.has_method("on_prop_interaction"):
-			other_area.on_prop_interaction(tile_pos)
-		elif parent.has_method("on_prop_interaction"):
-			parent.on_prop_interaction(tile_pos)
 
 
 # Esta función se llama cuando un cuerpo físico entra en el área
