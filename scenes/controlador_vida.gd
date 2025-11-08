@@ -19,10 +19,10 @@ signal jugador_muerto()
 
 func _ready():
 	# Inicializar los corazones en la UI
-	if contenedor_corazones:
+	#if contenedor_corazones:
 		_inicializar_corazones()
-	else:
-		push_error("No se encontró el nodo ContenedorCorazones. Asegúrate de que existe y está correctamente nombrado.")
+	#else:
+	#	push_error("No se encontró el nodo ContenedorCorazones. Asegúrate de que existe y está correctamente nombrado.")
 
 # Crea la estructura básica de UI si no existe
 func _crear_estructura_ui():
